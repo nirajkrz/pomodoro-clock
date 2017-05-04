@@ -1,0 +1,35 @@
+{
+  "name": "pomodoro-clock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "karma start",
+    "deploy": "gulp production --deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nirajkrz/pomodoro-clock.git"
+  },
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-animate": "^1.6.4",
+    "angular-messages": "^1.6.4",
+    "browser-sync": "^2.18.8"
+  },
+  "keywords": [
+    "pomodoro-clock"
+  ],
+  "author": "niraj",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nirajkrz/pomodoro-clock/issues"
+  },
+  "homepage": "https://github.com/nirajkrz/pomodoro-clock#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-minify-css": "^1.2.4"
+  }
+}
