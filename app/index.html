@@ -4,9 +4,108 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+
     <title>Pomodoro Clock</title>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-1 col-sm-4 col-lg-5"></div>
+        <div class="col-xs-10 col-sm-4 col-lg-2" id="session-settings">
+            <div class="row noselect">
+                <div class="col-xs-6">
+                    <div class="row">Length</div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <span class="glyphicon glyphicon-triangle-left" id="length-minus"></span>
+                        </div>
+                        <div class="col-xs-4" id="length"> 25 </div>
+                        <div class="col-xs-4">
+                            <span class="glyphicon glyphicon-triangle-right" id="length-plus"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="row">Break</div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <span class="glyphicon glyphicon-triangle-left" id="break-minus"></span>
+                        </div>
+                        <div class="col-xs-4" id="break"> 5 </div>
+                        <div class="col-xs-4">
+                            <span class="glyphicon glyphicon-triangle-right" id="break-plus"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1 col-sm-4 col-lg-5"></div>
+    </div>
 
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="pbar" class="progress-pie-chart" data-percent="0">
+                <div class="ppc-progress">
+                    <div class="ppc-progress-fill"></div>
+                </div>
+                <div class="ppc-percents">
+                    <div class="pcc-percents-wrapper">
+                        <p id="session">WORK</p>
+                        <p id="time">25:00</p>
+                        <span>0%</span>
+                    </div>
+                </div>
+            </div>
+            <progress style="display: none" id="progress_bar" value="0" max="100"></progress>
+        </div>
+    </div>
+
+    <div class="row">
+        <button class="btn" id="start-btn">Start</button>
+        <button class="btn" id="stop-btn">Stop</button>
+        <button class="btn" id="reset-btn">Reset</button>
+    </div>
+
+    <div class="row">
+        <div class="themes" style="left: -270px;">
+            <div class="panel-options">
+                <p>Choose accent color</p>
+                <ul class="color-picker clearfix">
+                    <li><a class="color-2" data-color-name="red" href="#"></a></li>
+                    <li><a class="color-7" data-color-name="emerald" href="#"></a></li>
+                    <li><a class="color-6" data-color-name="turquoise" href="#"></a></li>
+                    <li><a class="color-8" data-color-name="greensea" href="#"></a></li>
+                    <li><a class="color-1" data-color-name="blue" href="#"></a></li>
+                    <li><a class="color-5" data-color-name="wetasphalt" href="#"></a></li>
+                </ul>
+                <!--<ul class="color-picker color-picker-last clearfix">
+                    <li><a class="color-3" data-color-name="sunflower" href="#"></a></li>
+                    <li><a class="color-9" data-color-name="orange" href="#"></a></li>
+                    <li><a class="color-4" data-color-name="carrot" href="#"></a></li>
+                    <li><a class="color-10" data-color-name="silver" href="#"></a></li>
+                </ul>-->
+            </div>
+            <div class="panel-toggle left"> <!--<i class="glyphicons glyphicons-cogwheel"></i> -->
+                <span class="glyphicon glyphicon-cog"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p id="modal-title-text"></p>
+                    <h4 class="modal-title" id="modal-body-text"></h4>
+                    <button type="button" class="btn btn-default modalbtn" data-dismiss="modal" id="modal-btn-ok">OK</button>
+                    <button type="button" class="btn btn-default modalbtn" data-dismiss="modal" id="modal-btn-cancel">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

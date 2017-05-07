@@ -1,54 +1,84 @@
-/********************************* Define Gulp tasks ******************/
+var gulp = require('gulp'),
+    minifycss = require('gulp-minify-css'),
+    jshint = require('gulp-jshint'),
+	ngannotate = require('gulp-ng-annotate'),
+    stylish = require('jshint-stylish'),
+    uglify = require('gulp-uglify'),
+    usemin = require('gulp-usemin'),
+    imagemin = require('gulp-imagemin'),
+    rename = require('gulp-rename'),
+    concat = require('gulp-concat'),
+    notify = require('gulp-notify'),
+    cache = require('gulp-cache'),
+    changed = require('gulp-changed'),
+    rev = require('gulp-rev'),
+    browserSync = require('browser-sync'),
+    del = require('del');
 
-var gulp = require('gulp');
-var autoprefix = require('gulp-autoprefixer');
-var minifyCSS = require('gulp-minify-css');
-var concat = require('gulp-concat');
-var browserSync = require('browser-sync').create();
-
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var minify = require('gulp-minify-css');
-
-gulp.task('hello', function() {
-  console.log('Hello All...!');
+gulp.task('jshint', function() {
+  return gulp.src('app/scripts/**/*.js')
+  .pipe(jshint())
+  .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('js', function(){
-   gulp.src('src/scripts/*.js')
-   .pipe(concat('script.js'))
-   .pipe(uglify())
-   .pipe(gulp.dest('build/scripts/'));
+// Clean
+gulp.task('clean', function() {
+    return del(['dist']);
 });
 
-gulp.task('fonts', function() {
-  return gulp.src('app/fonts/**/*')
-  .pipe(gulp.dest('dist/fonts'))
+// Default task
+gulp.task('default', ['clean'], function() {
+    gulp.start('usemin', 'imagemin','copyfonts');
+});
+gulp.task('usemin',['jshint'], function () {
+  return gulp.src('./app/**/*.html')
+      .pipe(usemin({
+        css:[minifycss(),rev()],
+        js: [ngannotate(),uglify(),rev()]
+      }))
+      .pipe(gulp.dest('dist/'));
+});
+// Images
+gulp.task('imagemin', function() {
+  return del(['dist/images']), gulp.src('app/assets/images/**/*')
+    .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+    .pipe(gulp.dest('dist/assets/images'))
+    .pipe(notify({ message: 'Images task complete' }));
 });
 
-gulp.task('css', function(){
-   gulp.src('src/styles/*.css')
-   .pipe(concat('styles.css'))
-   .pipe(minify())
-   .pipe(gulp.dest('build/styles/'));
+gulp.task('copyfonts', ['clean'], function() {
+   gulp.src('app/assets/fonts/**/*.{ttf,woff,eof,svg}*')
+   .pipe(gulp.dest('./dist/assets/fonts'));
+   gulp.src('./bower_components/bootstrap/dist/fonts/**/*.{ttf,woff,eof,svg}*')
+   .pipe(gulp.dest('./dist/fonts'));
+});
+// Watch
+gulp.task('start', ['browser-sync'], function() {
+  // Watch .js files
+  gulp.watch('{app/scripts/**/*.js,app/styles/**/*.css,app/**/*.html}', ['usemin']);
+      // Watch image files
+  gulp.watch('app/assets/images/**/*', ['imagemin']);
+
 });
 
-gulp.task('start',['js','css'],function(){
+gulp.task('browser-sync', ['default'], function () {
+   var files = [
+      'app/**/*.html',
+      'app/styles/**/*.css',
+      'app/assets/images/**/*.png',
+      'app/scripts/**/*.js',
+      'dist/**/*'
+   ];
 
-});
-
-
-
-gulp.task('browserSync', function() {
-   browserSync.init({
+     browserSync.init(files, {
       server: {
-         baseDir: 'build'
+         baseDir: "dist",
+         index: "index.html"
       },
-   })
-})
-
-gulp.task('default', ['browserSync', 'styles'], function (){
-   gulp.watch('src/styles/*.css', ['styles']);
-});
+		 port:3000
+   });
 
 
+        // Watch any files in dist/, reload on change
+  gulp.watch(['dist/**']).on('change', browserSync.reload);
+    });
